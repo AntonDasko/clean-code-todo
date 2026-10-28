@@ -8,7 +8,7 @@
 // Event handling, user interaction is what starts the code execution.
 
 const newTaskInput = document.getElementById('new-task'); //Add a new task.
-const addNewTaskButton = document.getElementsByTagName('button')[0]; //first button
+const addButton = document.getElementsByTagName('button')[0]; //first button
 const incompleteTasksList = document.getElementById('incompleteTasks'); //ul of #incompleteTasks
 const completedTasksList = document.getElementById('completed-tasks'); //completed-tasks
 
@@ -16,8 +16,8 @@ const completedTasksList = document.getElementById('completed-tasks'); //complet
 const createNewTaskElement = function (taskString) {
   const taskItem = document.createElement('li');
 
-  //input (completionCheckbox)
-  const completionCheckbox = document.createElement('input'); //checkbx
+  //input (checkbox)
+  const checkBox = document.createElement('input'); //checkbx
   //label
   const label = document.createElement('label'); //label
   //input (text)
@@ -33,7 +33,7 @@ const createNewTaskElement = function (taskString) {
   label.className = 'task';
 
   //Each elements, needs appending
-  completionCheckbox.type = 'completionCheckbox';
+  checkBox.type = 'checkbox';
   taskEditInput.type = 'text';
   taskEditInput.className = 'task';
 
@@ -45,7 +45,7 @@ const createNewTaskElement = function (taskString) {
   deleteButton.appendChild(deleteIcon);
 
   //and appending.
-  taskItem.appendChild(completionCheckbox);
+  taskItem.appendChild(checkBox);
   taskItem.appendChild(label);
   taskItem.appendChild(taskEditInput);
   taskItem.appendChild(editButton);
@@ -55,12 +55,14 @@ const createNewTaskElement = function (taskString) {
 
 const addTask = function () {
   //Create a new list item with the text from the #new-task:
-  if (!newTaskInput.value) return;
+  const taskText = newTaskInput.value.trim();
+  if (!taskText) return;
   const taskItem = createNewTaskElement(newTaskInput.value);
 
   //Append taskItem to incompleteTasksList
   incompleteTasksList.appendChild(taskItem);
   attachTaskEventListeners(taskItem);
+
   newTaskInput.value = '';
 };
 
@@ -107,11 +109,11 @@ const moveTask = function (event) {
 //The glue to hold it all together.
 
 //Set the click handler to the addTask function.
-addNewTaskButton.addEventListener('click', addTask);
+addButton.addEventListener('click', addTask);
 
 const attachTaskEventListeners = function (tasktaskItem) {
   //select taskItems children
-  const completionCheckbox = tasktaskItem.querySelector('input[type=checkbox]');
+  const checkBox = tasktaskItem.querySelector('input[type=checkbox]');
   const editButton = tasktaskItem.querySelector('button.edit');
   const deleteButton = tasktaskItem.querySelector('button.delete');
 
@@ -119,8 +121,8 @@ const attachTaskEventListeners = function (tasktaskItem) {
   editButton.onclick = editTask;
   //Bind deleteTask to delete button.
   deleteButton.onclick = deleteTask;
-  //Bind taskCompleted to completionCheckboxEventHandler.
-  completionCheckbox.addEventListener('change', moveTask);
+  //Bind taskCompleted to checkBoxEventHandler.
+  checkBox.addEventListener('change', moveTask);
 };
 
 //cycle over incompleteTasksList ul list items
